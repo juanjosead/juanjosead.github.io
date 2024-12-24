@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de Página con Animaciones</title>
+    <link rel="stylesheet" href="prueba2.css">
+    <style>
+        /* Ajuste de velocidad para los GIFs */
+        .snoopy-caminando {
+            position: fixed;
+            bottom: 0;
+            left: -200px; /* Inicia fuera de la pantalla a la izquierda */
+            animation: caminar 10s linear infinite; /* Más lento */
+        }
+
+        .snoopy-caminando-arriba {
+            position: fixed;
+            top: 0;
+            left: -200px; /* Inicia fuera de la pantalla a la izquierda */
+            animation: caminar 10s linear infinite; /* Más lento */
+        }
+
+        @keyframes caminar {
+            0% {
+                left: -200px;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Reproducción de música -->
+    <audio id="musica" loop>
+        <source src="tu_musica.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- Contenedor de la animación 1 -->
+    <div id="animacion1">
+        <div class="flecha izquierda">←</div>
+        <div class="flecha derecha">→</div>
+
+        <!-- Imagen del pastel -->
+        <div class="pastel" onclick="triggerEffect()">
+            <img src="https://i.pinimg.com/736x/86/7d/55/867d559ac6a0f3ff753773b71735fc49.jpg" alt="Snoopyn">
+        </div>
+
+        <p class="indicacion">CLICK EN SNOOPYN</p>
+    </div>
+
+    <!-- Contenedor para la animación 2 -->
+    <div class="overlay"></div>
+    <div class="fuegos"></div>
+    
+    <!-- GIF de Snoopy caminando -->
+    <div class="snoopy-caminando" id="snoopy" style="display: none;">
+        <img src="https://www.cweden.com/snoopy/animated/EasterBegal.gif" alt="Snoopy caminando" />
+    </div>
+
+    <div class="snoopy-caminando-arriba" id="snoopy-arriba" style="display: none;">
+        <img src="https://www.cweden.com/snoopy/animated/snoopy-07.gif" alt="Snoopy caminando arriba" />
+    </div>
+
+    <!-- Script para manejar los efectos -->
+    <script>
+        function triggerEffect() {
+            const musica = document.getElementById('musica');
+            musica.play();
+
+            const pastel = document.querySelector('.pastel img');
+            pastel.classList.add('salto');
+
+            setTimeout(() => {
+                document.getElementById('animacion1').style.display = 'none';
+                const overlay = document.querySelector('.overlay');
+                overlay.style.animation = 'abrir 2s forwards';
+
+                triggerFireworks();
+
+                // Mostrar el primer GIF (Snoopy abajo)
+                setTimeout(() => {
+                    const snoopy = document.getElementById('snoopy');
+                    snoopy.style.display = 'block';
+                }, 2000);
+
+                // Mostrar el segundo GIF (Snoopy arriba)
+                setTimeout(() => {
+                    const snoopyArriba = document.getElementById('snoopy-arriba');
+                    snoopyArriba.style.display = 'block';
+                }, 5000);
+            }, 1500);
+        }
+
+        function triggerFireworks() {
+            setInterval(() => {
+                createFirework();
+            }, 300);
+        }
+
+        function createFirework() {
+            const firework = document.createElement("div");
+            firework.classList.add("firework");
+            document.body.appendChild(firework);
+
+            const size = Math.random() * 30 + 10;
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+
+            firework.style.width = `${size}px`;
+            firework.style.height = `${size}px`;
+            firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            firework.style.left = `${startX}px`;
+            firework.style.top = `${startY}px`;
+
+            setTimeout(() => {
+                firework.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
+
